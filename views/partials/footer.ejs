@@ -1,0 +1,95 @@
+<!-- ─── Footer ─────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-wave">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="var(--c-primary)"/></svg>
+  </div>
+  <div class="footer-body">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-brand" style="margin-bottom:16px">
+          <div class="brand-icon"><i class="fas fa-leaf"></i></div>
+          <div class="brand-text"><span class="brand-name">BioTeknologi</span><span class="brand-sub">Nusantara</span></div>
+        </div>
+        <p>Platform terdepan untuk produk ramah lingkungan dan layanan daur ulang limbah di Indonesia. Bersama kami, jaga bumi untuk generasi mendatang.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Navigasi</h4>
+        <ul>
+          <li><a href="/">Beranda</a></li>
+          <li><a href="/about">Tentang Kami</a></li>
+          <li><a href="/shop">Marketplace</a></li>
+          <li><a href="/daur-ulang">Daur Ulang</a></li>
+          <li><a href="/contact">Kontak</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Layanan</h4>
+        <ul>
+          <li><a href="/daur-ulang/form">Ajukan Daur Ulang</a></li>
+          <li><a href="/daur-ulang/tracking">Tracking Status</a></li>
+          <li><a href="/user/points">Program Reward</a></li>
+          <li><a href="/shop?sort=popular">Produk Terlaris</a></li>
+          <li><a href="/shop?category=makanan-organik">Produk Organik</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Hubungi Kami</h4>
+        <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>Jl. Teknologi Hijau No. 88<br>Jakarta Selatan 12740</span></div>
+        <div class="contact-item"><i class="fas fa-phone"></i><span>+62 21 7890 1234</span></div>
+        <div class="contact-item"><i class="fas fa-envelope"></i><span>info@bioteknasional.id</span></div>
+        <div class="contact-item"><i class="fas fa-clock"></i><span>Sen–Jum: 08.00–17.00 WIB</span></div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2024 PT BioTeknologi Nusantara. Semua hak dilindungi.</p>
+      <div class="footer-badges">
+        <span class="eco-badge"><i class="fas fa-leaf"></i> Carbon Neutral</span>
+        <span class="eco-badge"><i class="fas fa-recycle"></i> Eco Certified</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── Chatbot ─────────────────────────────────────────────── -->
+<div class="chatbot-wrapper">
+  <div class="chatbot-window" id="chatbotWindow">
+    <div class="chatbot-header">
+      <div class="chatbot-avatar"><i class="fas fa-leaf"></i></div>
+      <div><strong>BioBot</strong><small>Asisten Virtual • Online</small></div>
+      <button class="chatbot-close" id="chatbotClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="chatbot-messages" id="chatMessages">
+      <div class="chat-msg bot"><div class="chat-bubble">Halo! Saya <strong>BioBot</strong> 🌱 Asisten virtual PT BioTeknologi Nasional. Ada yang bisa saya bantu hari ini?</div></div>
+      <div class="chat-quickreply">
+        <button onclick="sendQuick('Info produk')">Info produk</button>
+        <button onclick="sendQuick('Cara daur ulang')">Cara daur ulang</button>
+        <button onclick="sendQuick('Info poin')">Info poin</button>
+        <button onclick="sendQuick('Cara pembayaran')">Pembayaran</button>
+      </div>
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="chatInput" placeholder="Ketik pesan..." maxlength="200">
+      <button id="chatSend"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+  <button class="chatbot-toggle" id="chatbotToggle" title="Chat dengan BioBot">
+    <i class="fas fa-comments" id="chatIcon"></i>
+    <i class="fas fa-times" id="chatCloseIcon" style="display:none"></i>
+    <span class="chat-dot"></span>
+  </button>
+</div>
+
+<!-- ─── Back to Top ────────────────────────────────────────── -->
+<button class="back-to-top" id="backToTop" title="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

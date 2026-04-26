@@ -1,0 +1,21 @@
+<%- include('../../partials/header') %>
+<div style="min-height:80vh;display:flex;align-items:center;justify-content:center;padding:40px 24px">
+<div style="width:100%;max-width:500px">
+<div style="text-align:center;margin-bottom:32px"><div style="width:60px;height:60px;background:linear-gradient(135deg,var(--c-primary),var(--c-primary-l));border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--c-accent);margin:0 auto 16px"><i class="fas fa-leaf"></i></div><h1 style="font-size:28px;margin-bottom:8px">Buat Akun Baru</h1><p style="color:var(--c-text3)">Bergabung dan mulai perjalanan hijau Anda</p></div>
+<div class="card"><div class="card-body">
+<form action="/auth/register" method="POST">
+<div class="form-group"><label class="form-label">Nama Lengkap *</label><input name="name" class="form-control" placeholder="Nama lengkap Anda" required></div>
+<div class="form-group"><label class="form-label">Email *</label><input name="email" type="email" class="form-control" placeholder="email@contoh.com" required></div>
+<div class="form-group"><label class="form-label">No. HP</label><input name="phone" class="form-control" placeholder="08xxxxxxxxxx"></div>
+<div class="form-group"><label class="form-label">Password *</label><input name="password" id="pwd" type="password" class="form-control" placeholder="Min. 8 karakter, huruf besar+kecil+angka" required></div>
+<div class="form-group"><label class="form-label">Konfirmasi Password *</label><input name="password_confirm" type="password" class="form-control" placeholder="Ulangi password" required></div>
+<div id="pwdStrength" style="margin-top:-12px;margin-bottom:16px;font-size:12px"></div>
+<button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fas fa-user-plus"></i> Daftar Sekarang</button>
+</form>
+<p style="text-align:center;margin-top:20px;font-size:14px;color:var(--c-text3)">Sudah punya akun? <a href="/auth/login" style="color:var(--c-primary);font-weight:600">Masuk di sini</a></p>
+</div></div>
+</div></div>
+<script>
+document.getElementById('pwd').addEventListener('input',function(){const v=this.value;const el=document.getElementById('pwdStrength');let s=0,msg='';if(v.length>=8)s++;if(/[A-Z]/.test(v))s++;if(/[a-z]/.test(v))s++;if(/\d/.test(v))s++;const colors=['var(--c-red)','var(--c-amber)','var(--c-primary-l)','var(--c-primary)'];const labels=['Lemah','Cukup','Kuat','Sangat Kuat'];if(v)el.innerHTML='<span style="color:'+colors[s-1]+'"><i class="fas fa-circle"></i> Kekuatan: '+labels[s-1]+'</span>';else el.innerHTML='';});
+</script>
+<%- include('../../partials/footer') %>

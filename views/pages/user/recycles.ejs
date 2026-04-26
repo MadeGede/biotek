@@ -1,0 +1,30 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Riwayat Daur Ulang</h1><div class="breadcrumb"><a href="/">Home</a><span>›</span><a href="/user/dashboard">Dashboard</a><span>›</span><span>Daur Ulang</span></div></div>
+<section class="section-sm"><div class="container"><div class="dashboard-layout">
+<%- include('../../partials/sidebar') %>
+<div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+<h3>Riwayat Pengajuan Daur Ulang</h3>
+<a href="/daur-ulang/form" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Ajukan Baru</a>
+</div>
+<% if (!recycles.length) { %>
+<div class="empty-state"><div class="empty-icon">♻️</div><h3>Belum Ada Pengajuan</h3><p>Ajukan daur ulang pertama Anda dan dapatkan 50 poin reward!</p><a href="/daur-ulang/form" class="btn btn-primary">Ajukan Sekarang</a></div>
+<% } else { %>
+<div class="card"><div class="table-wrap"><table>
+<thead><tr><th>Kode</th><th>Jenis Limbah</th><th>Jadwal Pickup</th><th>Status</th><th>Poin</th><th>Aksi</th></tr></thead>
+<tbody>
+<% recycles.forEach(r=>{ %>
+<tr>
+<td><strong style="color:var(--c-primary);font-size:13px"><%= r.submission_code %></strong></td>
+<td><%= r.waste_type %></td>
+<td style="font-size:13px"><%= r.pickup_date %><br><span style="color:var(--c-text3)"><%= r.pickup_time %></span></td>
+<td><span class="status status-<%= r.status %>"><%= {pending:'Menunggu',confirmed:'Dikonfirmasi',picked_up:'Dijemput',processed:'Diproses',completed:'Selesai',cancelled:'Dibatalkan'}[r.status]||r.status %></span></td>
+<td><% if(r.points_awarded>0){ %><span style="color:var(--c-primary-l);font-weight:700"><i class="fas fa-star"></i> +<%= r.points_awarded %></span><% }else{ %><span style="color:var(--c-text3)">—</span><% } %></td>
+<td><a href="/daur-ulang/tracking?code=<%= r.submission_code %>" class="btn btn-outline btn-sm">Tracking</a></td>
+</tr>
+<% }) %>
+</tbody>
+</table></div></div>
+<% } %>
+</div></div></div></section>
+<%- include('../../partials/footer') %>

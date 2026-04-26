@@ -1,0 +1,17 @@
+const express = require('express');
+const router = express.Router();
+const ShopController = require('../controllers/ShopController');
+const { isAuthenticated } = require('../middleware/auth');
+router.get('/', ShopController.index);
+router.get('/cart', ShopController.getCart);
+router.post('/cart/add', ShopController.addToCart);
+router.post('/cart/update', ShopController.updateCart);
+router.post('/cart/remove', ShopController.removeFromCart);
+router.get('/checkout', isAuthenticated, ShopController.getCheckout);
+router.post('/checkout', isAuthenticated, ShopController.postCheckout);
+router.get('/payment/:id', isAuthenticated, ShopController.getPayment);
+router.post('/payment/:id/upload', isAuthenticated, ShopController.uploadPaymentProof);
+router.post('/wishlist/toggle', isAuthenticated, ShopController.toggleWishlist);
+router.post('/review', isAuthenticated, ShopController.postReview);
+router.get('/:slug', ShopController.detail);
+module.exports = router;

@@ -1,0 +1,49 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Tracking Daur Ulang</h1><p>Pantau status pengajuan daur ulang Anda</p><div class="breadcrumb"><a href="/">Home</a><span>›</span><a href="/daur-ulang">Daur Ulang</a><span>›</span><span>Tracking</span></div></div>
+<section class="section-sm"><div class="container" style="max-width:700px">
+<div class="card" style="margin-bottom:24px"><div class="card-body">
+<h3 style="margin-bottom:16px"><i class="fas fa-search" style="color:var(--c-primary-l)"></i> Cek Status Pengajuan</h3>
+<form method="GET" action="/daur-ulang/tracking">
+<div class="input-group"><input name="code" class="form-control" placeholder="Masukkan kode pengajuan (contoh: DU-ABC123-XY12)" value="<%= code||'' %>"><button type="submit" class="btn btn-primary">Cek</button></div>
+</form></div></div>
+
+<% if (code && !submission) { %>
+<div class="empty-state"><div class="empty-icon">🔍</div><h3>Kode Tidak Ditemukan</h3><p>Pastikan kode pengajuan yang Anda masukkan sudah benar.</p></div>
+<% } else if (submission) { %>
+<div class="card"><div class="card-body">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+<div><h3><%= submission.submission_code %></h3><p style="font-size:13px;color:var(--c-text3)">Diajukan: <%= new Date(submission.created_at).toLocaleDateString('id-ID',{dateStyle:'long'}) %></p></div>
+<span class="status status-<%= submission.status %>"><%= {pending:'Menunggu',confirmed:'Dikonfirmasi',picked_up:'Dijemput',processed:'Diproses',completed:'Selesai',cancelled:'Dibatalkan'}[submission.status] %></span>
+</div>
+<div style="background:var(--c-bg2);border-radius:var(--r-lg);padding:20px;margin-bottom:24px">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:14px">
+<div><span style="color:var(--c-text3)">Nama:</span><br><strong><%= submission.name %></strong></div>
+<div><span style="color:var(--c-text3)">No. HP:</span><br><strong><%= submission.phone %></strong></div>
+<div><span style="color:var(--c-text3)">Jenis Limbah:</span><br><strong><%= submission.waste_type %></strong></div>
+<div><span style="color:var(--c-text3)">Jadwal Pickup:</span><br><strong><%= submission.pickup_date %> — <%= submission.pickup_time %></strong></div>
+</div>
+<% if (submission.address) { %><div style="margin-top:12px;font-size:14px"><span style="color:var(--c-text3)">Alamat:</span><br><strong><%= submission.address %></strong></div><% } %>
+</div>
+
+<h4 style="margin-bottom:20px">Timeline Status</h4>
+<div class="tracking-timeline">
+<% const steps=[{key:'pending',label:'Pengajuan Diterima',desc:'Sistem menerima pengajuan daur ulang Anda'},{key:'confirmed',label:'Dikonfirmasi',desc:'Tim kami mengkonfirmasi jadwal pickup'},{key:'picked_up',label:'Limbah Dijemput',desc:'Tim kami sedang dalam perjalanan ke lokasi Anda'},{key:'processed',label:'Sedang Diproses',desc:'Limbah sedang diproses di fasilitas kami'},{key:'completed',label:'Selesai',desc:'Limbah berhasil didaur ulang. Terima kasih!'}];
+const statusOrder=['pending','confirmed','picked_up','processed','completed'];
+const currentIdx=statusOrder.indexOf(submission.status); %>
+<% steps.forEach((step,i)=>{ %>
+<div class="timeline-item <%= i<=currentIdx?'completed':'' %> <%= i===currentIdx?'active':'' %>">
+<h4><%= step.label %><% if(i<=currentIdx){ %> <i class="fas fa-check" style="color:var(--c-primary-l);font-size:12px"></i><% } %></h4>
+<p><%= step.desc %></p>
+</div>
+<% }) %>
+</div>
+<% if (submission.notes) { %><div style="background:var(--c-bg2);border-radius:var(--r-md);padding:16px;margin-top:16px"><strong style="font-size:13px">Catatan dari Tim:</strong><p style="font-size:14px;margin-top:6px"><%= submission.notes %></p></div><% } %>
+<% if (submission.points_awarded > 0) { %><div style="background:linear-gradient(135deg,var(--c-primary),var(--c-primary-l));border-radius:var(--r-md);padding:16px;margin-top:16px;color:#fff;text-align:center"><i class="fas fa-star" style="color:var(--c-accent)"></i> Anda mendapat <strong style="color:var(--c-accent)"><%= submission.points_awarded %> Poin Reward</strong></div><% } %>
+</div></div>
+<% } %>
+
+<% if (user) { %>
+<div style="margin-top:24px;text-align:center"><a href="/user/recycles" class="btn btn-outline"><i class="fas fa-history"></i> Riwayat Daur Ulang Saya</a></div>
+<% } %>
+</div></section>
+<%- include('../../partials/footer') %>

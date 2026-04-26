@@ -1,0 +1,16 @@
+const express = require('express');
+const router = express.Router();
+const UserController = require('../controllers/UserController');
+const { isAuthenticated } = require('../middleware/auth');
+router.use(isAuthenticated);
+router.get('/dashboard', UserController.dashboard);
+router.get('/orders', UserController.orders);
+router.get('/orders/:id', UserController.orderDetail);
+router.get('/recycles', UserController.recycles);
+router.get('/wishlist', UserController.wishlist);
+router.get('/points', UserController.points);
+router.get('/profile', UserController.profile);
+router.post('/profile', UserController.updateProfile);
+router.post('/notifications/read', UserController.markNotificationRead);
+router.get('/notifications', UserController.getNotifications);
+module.exports = router;

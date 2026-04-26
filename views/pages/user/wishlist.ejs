@@ -1,0 +1,31 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Wishlist Saya</h1><div class="breadcrumb"><a href="/">Home</a><span>›</span><a href="/user/dashboard">Dashboard</a><span>›</span><span>Wishlist</span></div></div>
+<section class="section-sm"><div class="container"><div class="dashboard-layout">
+<%- include('../../partials/sidebar') %>
+<div>
+<% if (!products.length) { %>
+<div class="empty-state"><div class="empty-icon">❤️</div><h3>Wishlist Masih Kosong</h3><p>Simpan produk favorit Anda untuk dibeli nanti!</p><a href="/shop" class="btn btn-primary">Jelajahi Produk</a></div>
+<% } else { %>
+<div class="product-grid">
+<% products.forEach(p=>{ %>
+<div class="product-card">
+<a href="/shop/<%= p.slug %>">
+<div class="product-img-wrap">
+<% if (p.image) { %><img src="/images/products/<%= p.image %>" alt="<%= p.name %>"><% } else { %><div class="product-img-placeholder"><i class="fas fa-leaf"></i></div><% } %>
+<button class="product-wishlist-btn active" onclick="event.preventDefault();toggleWishlist(<%= p.id %>,this)"><i class="fas fa-heart"></i></button>
+</div>
+</a>
+<div class="product-info">
+<a href="/shop/<%= p.slug %>"><div class="product-name"><%= p.name %></div></a>
+<div class="product-stars"><span class="stars"><%= '★'.repeat(Math.round(p.avg_rating||0)) %><%= '☆'.repeat(5-Math.round(p.avg_rating||0)) %></span></div>
+<div class="product-price">Rp <%= Number(p.price).toLocaleString('id-ID') %></div>
+<div class="product-footer">
+<button class="btn btn-primary btn-sm" style="flex:1" onclick="addToCart(<%= p.id %>,this)"><i class="fas fa-cart-plus"></i> Keranjang</button>
+</div>
+</div>
+</div>
+<% }) %>
+</div>
+<% } %>
+</div></div></div></section>
+<%- include('../../partials/footer') %>

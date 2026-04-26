@@ -1,0 +1,29 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Layanan Daur Ulang</h1><p>Daur ulang limbah Anda, dapatkan poin reward!</p><div class="breadcrumb"><a href="/">Home</a><span>›</span><span>Daur Ulang</span></div></div>
+<section class="section"><div class="container">
+<div class="grid-3" style="margin-bottom:64px">
+<div class="feature-card" style="text-align:center"><div class="feature-icon" style="margin:0 auto 20px"><i class="fas fa-clipboard-list"></i></div><h3>1. Isi Formulir</h3><p>Isi data diri, jenis limbah, dan pilih jadwal pickup yang sesuai dengan ketersediaan Anda.</p></div>
+<div class="feature-card" style="text-align:center"><div class="feature-icon" style="margin:0 auto 20px"><i class="fas fa-truck"></i></div><h3>2. Pickup Gratis</h3><p>Tim kami akan menjemput limbah Anda sesuai jadwal. Gratis tanpa biaya apapun!</p></div>
+<div class="feature-card" style="text-align:center"><div class="feature-icon" style="margin:0 auto 20px"><i class="fas fa-star"></i></div><h3>3. Dapatkan Poin</h3><p>Setiap pengajuan daur ulang mendapatkan 50 poin yang bisa ditukarkan dengan diskon belanja.</p></div>
+</div>
+<div class="section-header text-center" style="margin-bottom:40px"><span class="section-label">Jenis Limbah</span><h2 class="section-title">Apa Saja yang Bisa Didaur Ulang?</h2></div>
+<div class="grid-3" style="margin-bottom:48px">
+<% [{icon:'📄',name:'Kertas & Kardus',items:['Koran & majalah','Kardus kemasan','Buku bekas','Kertas kantor'],color:'#3b82f6'},{icon:'🧴',name:'Plastik',items:['Botol plastik PET','Kantong plastik','Wadah makanan','Ember & barang plastik'],color:'#8b5cf6'},{icon:'🔩',name:'Logam & Elektronik',items:['Kaleng minuman','Besi & baja bekas','Elektronik rusak','Kabel listrik'],color:'var(--c-amber)'},{icon:'🍶',name:'Kaca',items:['Botol kaca','Toples kaca','Kaca jendela','Cermin bekas'],color:'#06b6d4'},{icon:'🌱',name:'Organik',items:['Sisa makanan','Daun kering','Sampah dapur','Limbah kebun'],color:'var(--c-primary-l)'},{icon:'🪣',name:'Minyak & Cairan',items:['Minyak goreng bekas','Oli kendaraan','Cat bekas','Baterai'],color:'var(--c-red)'}].forEach(w=>{ %>
+<div class="edu-card">
+<div class="edu-icon-wrap" style="background:<%= w.color %>"><%= w.icon %></div>
+<div class="edu-content">
+<h4><%= w.name %></h4>
+<ul style="margin-top:8px">
+<% w.items.forEach(i=>{ %><li style="font-size:13px;color:var(--c-text3);display:flex;gap:6px;margin-bottom:4px"><span style="color:var(--c-primary-l)">✓</span><%= i %></li><% }) %>
+</ul>
+</div>
+</div>
+<% }) %>
+</div>
+<div class="cta-section" style="text-align:center"><h2>Siap Mendaur Ulang?</h2><p>Ajukan pengambilan limbah Anda sekarang dan dapatkan 50 poin reward!</p>
+<div class="cta-buttons">
+<a href="/daur-ulang/form" class="btn btn-accent btn-lg"><i class="fas fa-plus-circle"></i> Ajukan Daur Ulang</a>
+<a href="/daur-ulang/tracking" class="btn btn-lg" style="color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:var(--r-full)"><i class="fas fa-search"></i> Cek Status</a>
+</div></div>
+</div></section>
+<%- include('../../partials/footer') %>

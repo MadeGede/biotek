@@ -1,0 +1,94 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1><%= product.name %></h1><div class="breadcrumb"><a href="/">Home</a><span>›</span><a href="/shop">Shopping</a><span>›</span><span><%= product.name %></span></div></div>
+<section class="section-sm"><div class="container">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-bottom:64px">
+<div>
+<div style="background:var(--c-bg2);border-radius:var(--r-xl);aspect-ratio:1;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:16px">
+<% if (product.image) { %><img src="/images/products/<%= product.image %>" alt="<%= product.name %>" style="width:100%;height:100%;object-fit:cover"><% } else { %><div style="font-size:100px">🌿</div><% } %>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<% if (product.eco_label) { %><span class="badge-eco" style="padding:6px 14px"><i class="fas fa-leaf"></i> <%= product.eco_label %></span><% } %>
+<span style="background:var(--c-bg2);padding:6px 14px;border-radius:var(--r-full);font-size:12px;color:var(--c-text3)"><i class="fas fa-eye"></i> <%= product.view_count %> dilihat</span>
+</div>
+</div>
+<div>
+<div class="product-category" style="margin-bottom:8px"><%= product.category_name %></div>
+<h1 style="font-size:28px;margin-bottom:12px"><%= product.name %></h1>
+<div class="product-stars" style="margin-bottom:16px"><span class="stars" style="font-size:18px"><%= '★'.repeat(Math.round(product.avg_rating||0)) %><%= '☆'.repeat(5-Math.round(product.avg_rating||0)) %></span><span class="review-count" style="font-size:14px">(<%= product.review_count %> ulasan)</span></div>
+<div class="product-price" style="font-size:32px;margin-bottom:24px">Rp <%= Number(product.price).toLocaleString('id-ID') %></div>
+<div style="background:var(--c-bg2);border-radius:var(--r-lg);padding:20px;margin-bottom:24px">
+<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px"><span>Stok</span><strong style="color:<%= product.stock>0?'var(--c-primary)':'var(--c-red)' %>"><%= product.stock>0?product.stock+' tersedia':'Habis' %></strong></div>
+<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px"><span>Terjual</span><strong><%= product.sold_count %> item</strong></div>
+<% if (product.weight) { %><div style="display:flex;justify-content:space-between;font-size:14px"><span>Berat</span><strong><%= product.weight %> kg</strong></div><% } %>
+</div>
+<% if (product.stock > 0) { %>
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+<span style="font-size:14px;font-weight:500">Jumlah:</span>
+<div class="qty-control"><button class="qty-btn" onclick="changeQty(-1)">−</button><input class="qty-input" id="detailQty" type="number" value="1" min="1" max="<%= product.stock %>"><button class="qty-btn" onclick="changeQty(1)">+</button></div>
+</div>
+<div style="display:flex;gap:12px">
+<button class="btn btn-primary btn-lg" style="flex:1" onclick="addToCartQty(<%= product.id %>)"><i class="fas fa-cart-plus"></i> Tambah ke Keranjang</button>
+<button class="btn btn-ghost btn-lg wishlist-toggle <%= inWishlist?'active':'' %>" data-id="<%= product.id %>" style="width:56px;border:1px solid var(--c-border)"><i class="fas fa-heart"></i></button>
+</div>
+<% } else { %><button class="btn btn-ghost btn-block btn-lg" disabled>Stok Habis</button><% } %>
+<div style="margin-top:20px;display:flex;gap:16px;font-size:13px;color:var(--c-text3)">
+<span><i class="fas fa-truck" style="color:var(--c-primary-l)"></i> Gratis ongkir di atas Rp 200.000</span>
+<span><i class="fas fa-shield-alt" style="color:var(--c-primary-l)"></i> Garansi produk asli</span>
+</div>
+</div></div>
+
+<div class="card" style="margin-bottom:32px"><div class="card-body">
+<h3 style="margin-bottom:16px">Deskripsi Produk</h3>
+<p style="color:var(--c-text2);line-height:1.8"><%= product.description||'Produk ramah lingkungan berkualitas tinggi.' %></p>
+</div></div>
+
+<div class="card" style="margin-bottom:32px"><div class="card-body">
+<h3 style="margin-bottom:24px">Ulasan Pelanggan (<%= reviews.length %>)</h3>
+<% if (reviews.length) { reviews.forEach(r=>{ %>
+<div style="border-bottom:1px solid var(--c-border);padding:16px 0">
+<div style="display:flex;justify-content:space-between;margin-bottom:8px">
+<div style="display:flex;align-items:center;gap:10px">
+<div class="testi-avatar"><% if (r.avatar) { %><img src="/uploads/<%= r.avatar %>"><% } else { %><%= r.user_name.charAt(0) %><% } %></div>
+<div><strong style="font-size:14px"><%= r.user_name %></strong><div style="color:var(--c-amber);font-size:12px"><%= '★'.repeat(r.rating) %><%= '☆'.repeat(5-r.rating) %></div></div>
+</div>
+<span style="font-size:12px;color:var(--c-text3)"><%= new Date(r.created_at).toLocaleDateString('id-ID') %></span>
+</div>
+<p style="font-size:14px;color:var(--c-text2)"><%= r.comment %></p>
+</div>
+<% }) } else { %><p style="color:var(--c-text3);text-align:center;padding:24px 0">Belum ada ulasan untuk produk ini.</p><% } %>
+
+<% if (user) { %>
+<div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--c-border)">
+<h4 style="margin-bottom:16px">Tulis Ulasan</h4>
+<form action="/shop/review" method="POST">
+<input type="hidden" name="product_id" value="<%= product.id %>">
+<div class="form-group"><label class="form-label">Rating</label>
+<div class="star-rating">
+<input type="radio" id="s5" name="rating" value="5"><label for="s5">★</label>
+<input type="radio" id="s4" name="rating" value="4"><label for="s4">★</label>
+<input type="radio" id="s3" name="rating" value="3"><label for="s3">★</label>
+<input type="radio" id="s2" name="rating" value="2"><label for="s2">★</label>
+<input type="radio" id="s1" name="rating" value="1" checked><label for="s1">★</label>
+</div></div>
+<div class="form-group"><label class="form-label">Komentar</label><textarea name="comment" class="form-control" rows="3" placeholder="Bagaimana pengalaman Anda dengan produk ini?"></textarea></div>
+<button type="submit" class="btn btn-primary">Kirim Ulasan</button>
+</form></div>
+<% } else { %><p style="margin-top:16px;font-size:14px;color:var(--c-text3);text-align:center"><a href="/auth/login" style="color:var(--c-primary)">Login</a> untuk memberikan ulasan</p><% } %>
+</div></div>
+
+<% if (related.length) { %>
+<h3 style="margin-bottom:20px">Produk Terkait</h3>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+<% related.forEach(r=>{ %>
+<a href="/shop/<%= r.slug %>" class="product-card" style="display:block">
+<div class="product-img-wrap"><% if (r.image) { %><img src="/images/products/<%= r.image %>" alt="<%= r.name %>"><% } else { %><div class="product-img-placeholder"><i class="fas fa-leaf"></i></div><% } %></div>
+<div class="product-info"><div class="product-name" style="-webkit-line-clamp:1"><%= r.name %></div><div class="product-price" style="font-size:15px">Rp <%= Number(r.price).toLocaleString('id-ID') %></div></div>
+</a>
+<% }) %>
+</div><% } %>
+</div></section>
+<script>
+function changeQty(delta){const el=document.getElementById('detailQty');const max=parseInt(el.max);el.value=Math.max(1,Math.min(max,(parseInt(el.value)||1)+delta));}
+function addToCartQty(id){const qty=document.getElementById('detailQty').value;addToCart(id,null,qty);}
+</script>
+<%- include('../../partials/footer') %>

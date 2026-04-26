@@ -1,0 +1,73 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Kelola Pesanan</h1><p>Validasi pembayaran dan kelola status pesanan</p></div>
+<section class="section-sm"><div class="container"><div class="dashboard-layout">
+<%- include('../../partials/admin-sidebar') %>
+<div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+<% [['','Semua'],['pending','Pending'],['processing','Diproses'],['shipped','Dikirim'],['completed','Selesai'],['cancelled','Dibatalkan']].forEach(([v,l])=>{ %>
+<a href="/admin/orders<%= v?'?status='+v:'' %>" class="btn btn-sm <%=filterStatus===v?'btn-primary':'btn-outline'%>"><%= l %></a>
+<% }) %>
+</div>
+<div class="card"><div class="table-wrap"><table>
+<thead><tr><th>Kode</th><th>Customer</th><th>Total</th><th>Metode Bayar</th><th>Bukti</th><th>Status Bayar</th><th>Status Order</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+<tbody>
+<% orders.forEach(o=>{ %>
+<tr>
+<td><strong style="color:var(--c-primary);font-size:12px"><%= o.order_code %></strong></td>
+<td style="font-size:13px"><%= o.user_name %><br><span style="color:var(--c-text3);font-size:11px"><%= o.user_email %></span></td>
+<td style="font-weight:600;font-size:13px;white-space:nowrap">Rp <%= Number(o.grand_total).toLocaleString('id-ID') %></td>
+<td style="font-size:12px"><%= o.payment_method==='bank_transfer'?'🏦 Bank Transfer':'📱 QRIS' %></td>
+<td>
+<% if(o.payment_proof){ %>
+<a href="/uploads/proofs/<%= o.payment_proof %>" target="_blank" class="btn btn-outline btn-sm">Lihat Bukti</a>
+<% }else{ %><span style="font-size:12px;color:var(--c-text3)">Belum upload</span><% } %>
+</td>
+<td><span class="status status-<%= o.payment_status %>"><%= {pending:'Pending',paid:'Lunas',failed:'Gagal'}[o.payment_status] %></span></td>
+<td><span class="status status-<%= o.order_status %>"><%= {pending:'Pending',processing:'Diproses',shipped:'Dikirim',completed:'Selesai',cancelled:'Dibatalkan'}[o.order_status] %></span></td>
+<td style="font-size:11px;color:var(--c-text3)"><%= new Date(o.created_at).toLocaleDateString('id-ID') %></td>
+<td>
+<button class="btn btn-primary btn-sm" onclick="openOrderModal(<%= o.id %>,'<%= o.payment_status %>','<%= o.order_status %>')">Update</button>
+</td>
+</tr>
+<% }) %>
+</tbody>
+</table></div></div>
+</div>
+</div></div></section>
+
+<!-- Order Status Modal -->
+<div class="modal-overlay" id="orderModal">
+<div class="modal" style="max-width:440px">
+<div class="modal-header"><h3 class="modal-title">Update Status Pesanan</h3><button class="modal-close" onclick="closeModal('orderModal')"><i class="fas fa-times"></i></button></div>
+<form id="orderForm" method="POST">
+<div class="form-group"><label class="form-label">Status Pembayaran</label>
+<select name="payment_status" id="orderPayStatus" class="form-control">
+<option value="pending">Pending</option>
+<option value="paid">Lunas / Dikonfirmasi</option>
+<option value="failed">Gagal</option>
+</select></div>
+<div class="form-group"><label class="form-label">Status Pesanan</label>
+<select name="order_status" id="orderStatus" class="form-control">
+<option value="pending">Pending</option>
+<option value="processing">Sedang Diproses</option>
+<option value="shipped">Dikirim</option>
+<option value="completed">Selesai</option>
+<option value="cancelled">Dibatalkan</option>
+</select></div>
+<div style="display:flex;gap:12px;justify-content:flex-end">
+<button type="button" class="btn btn-ghost" onclick="closeModal('orderModal')">Batal</button>
+<button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Status</button>
+</div>
+</form>
+</div>
+</div>
+<script>
+function openOrderModal(id, payStatus, ordStatus) {
+  const form = document.getElementById('orderForm');
+  form.action = '/admin/orders/' + id + '/status';
+  document.getElementById('orderPayStatus').value = payStatus;
+  document.getElementById('orderStatus').value = ordStatus;
+  document.getElementById('orderModal').classList.add('open');
+}
+</script>
+<%- include('../../partials/footer') %>

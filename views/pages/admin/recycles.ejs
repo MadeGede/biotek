@@ -1,0 +1,59 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Kelola Daur Ulang</h1><p>Kelola pengajuan dan jadwal pickup limbah</p></div>
+<section class="section-sm"><div class="container"><div class="dashboard-layout">
+<%- include('../../partials/admin-sidebar') %>
+<div>
+<div class="card"><div class="table-wrap"><table>
+<thead><tr><th>Kode</th><th>Nama</th><th>Kontak</th><th>Jenis Limbah</th><th>Jadwal Pickup</th><th>Status</th><th>Poin</th><th>Aksi</th></tr></thead>
+<tbody>
+<% submissions.forEach(s=>{ %>
+<tr>
+<td><strong style="color:var(--c-primary);font-size:12px"><%= s.submission_code %></strong></td>
+<td style="font-size:13px"><%= s.name %></td>
+<td style="font-size:12px;color:var(--c-text3)"><%= s.phone %></td>
+<td style="font-size:13px"><%= s.waste_type %><% if(s.waste_weight){%><br><span style="font-size:11px;color:var(--c-text3)"><%= s.waste_weight %> kg</span><%}%></td>
+<td style="font-size:12px"><%= s.pickup_date %><br><span style="color:var(--c-text3)"><%= s.pickup_time %></span></td>
+<td><span class="status status-<%= s.status %>"><%= {pending:'Menunggu',confirmed:'Dikonfirmasi',picked_up:'Dijemput',processed:'Diproses',completed:'Selesai',cancelled:'Dibatalkan'}[s.status] %></span></td>
+<td><span style="color:var(--c-primary-l);font-weight:600"><%= s.points_awarded %>pts</span></td>
+<td>
+<% if (s.photo) { %><a href="/uploads/waste/<%= s.photo %>" target="_blank" class="btn btn-ghost btn-sm" style="margin-bottom:4px"><i class="fas fa-image"></i></a><br><% } %>
+<button class="btn btn-primary btn-sm" onclick="openRecycleModal(<%= s.id %>,'<%= s.status %>','<%= (s.notes||'').replace(/'/g,\"\\\\'\" ) %>')">Update</button>
+</td>
+</tr>
+<% }) %>
+</tbody>
+</table></div></div>
+</div>
+</div></div></section>
+
+<!-- Recycle Status Modal -->
+<div class="modal-overlay" id="recycleModal">
+<div class="modal" style="max-width:440px">
+<div class="modal-header"><h3 class="modal-title">Update Status Daur Ulang</h3><button class="modal-close" onclick="closeModal('recycleModal')"><i class="fas fa-times"></i></button></div>
+<form id="recycleForm" method="POST">
+<div class="form-group"><label class="form-label">Status</label>
+<select name="status" id="recycleStatus" class="form-control">
+<option value="pending">Menunggu Konfirmasi</option>
+<option value="confirmed">Dikonfirmasi</option>
+<option value="picked_up">Limbah Telah Dijemput</option>
+<option value="processed">Sedang Diproses</option>
+<option value="completed">Selesai</option>
+<option value="cancelled">Dibatalkan</option>
+</select></div>
+<div class="form-group"><label class="form-label">Catatan untuk Customer</label><textarea name="notes" id="recycleNotes" class="form-control" rows="3" placeholder="Info tambahan untuk customer..."></textarea></div>
+<div style="display:flex;gap:12px;justify-content:flex-end">
+<button type="button" class="btn btn-ghost" onclick="closeModal('recycleModal')">Batal</button>
+<button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update</button>
+</div>
+</form>
+</div>
+</div>
+<script>
+function openRecycleModal(id, status, notes) {
+  document.getElementById('recycleForm').action = '/admin/recycles/' + id + '/status';
+  document.getElementById('recycleStatus').value = status;
+  document.getElementById('recycleNotes').value = notes || '';
+  document.getElementById('recycleModal').classList.add('open');
+}
+</script>
+<%- include('../../partials/footer') %>

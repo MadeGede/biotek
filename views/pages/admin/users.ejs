@@ -1,0 +1,37 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Kelola Pengguna</h1><p>Data seluruh pengguna terdaftar</p></div>
+<section class="section-sm"><div class="container"><div class="dashboard-layout">
+<%- include('../../partials/admin-sidebar') %>
+<div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+<h3>Pengguna (<%= users.length %>)</h3>
+<div style="display:flex;gap:8px">
+<a href="/admin/users?role=customer" class="btn btn-sm btn-outline">Customer</a>
+<a href="/admin/users?role=admin" class="btn btn-sm btn-outline">Admin</a>
+<a href="/admin/users" class="btn btn-sm btn-ghost">Semua</a>
+</div>
+</div>
+<div class="card"><div class="table-wrap"><table>
+<thead><tr><th>Nama</th><th>Email</th><th>No. HP</th><th>Role</th><th>Poin</th><th>Status</th><th>Bergabung</th></tr></thead>
+<tbody>
+<% users.forEach(u=>{ %>
+<tr>
+<td>
+<div style="display:flex;align-items:center;gap:10px">
+<div class="testi-avatar" style="width:36px;height:36px;font-size:14px"><%= u.name.charAt(0).toUpperCase() %></div>
+<strong style="font-size:13px"><%= u.name %></strong>
+</div>
+</td>
+<td style="font-size:13px;color:var(--c-text3)"><%= u.email %></td>
+<td style="font-size:13px"><%= u.phone||'—' %></td>
+<td><span class="status <%=u.role==='admin'?'status-processing':'status-confirmed'%>"><%= u.role %></span></td>
+<td style="font-weight:600;color:var(--c-primary-l)"><i class="fas fa-star" style="font-size:10px"></i> <%= u.points %></td>
+<td><span class="status <%=u.is_active?'status-completed':'status-cancelled'%>"><%=u.is_active?'Aktif':'Nonaktif'%></span></td>
+<td style="font-size:12px;color:var(--c-text3)"><%= new Date(u.created_at).toLocaleDateString('id-ID') %></td>
+</tr>
+<% }) %>
+</tbody>
+</table></div></div>
+</div>
+</div></div></section>
+<%- include('../../partials/footer') %>

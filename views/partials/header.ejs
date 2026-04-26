@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="PT BioTeknologi Nasional - Marketplace produk ramah lingkungan dan platform layanan daur ulang limbah terpercaya di Indonesia.">
+<title><%= title %> — PT BioTeknologi Nusantara</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ─── Navbar ─────────────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-brand">
+      <div class="brand-icon"><i class="fas fa-leaf"></i></div>
+      <div class="brand-text">
+        <span class="brand-name">BioTeknologi</span>
+        <span class="brand-sub">Nusantara</span>
+      </div>
+    </a>
+
+    <div class="nav-menu" id="navMenu">
+      <a href="/" class="nav-link <%= title==='Home'?'active':'' %>">Home</a>
+      <a href="/about" class="nav-link <%= title==='Tentang Kami'?'active':'' %>">About</a>
+      <a href="/shop" class="nav-link <%= title==='Marketplace Eco'||title==='Shopping'?'active':'' %>">Shopping</a>
+      <a href="/daur-ulang" class="nav-link <%= title==='Layanan Daur Ulang'?'active':'' %>">Daur Ulang</a>
+      <a href="/contact" class="nav-link <%= title==='Hubungi Kami'?'active':'' %>">Contact</a>
+    </div>
+
+    <div class="nav-actions">
+      <!-- Dark Mode Toggle -->
+      <button class="btn-icon" id="themeToggle" title="Toggle Dark Mode">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+
+      <!-- Search -->
+      <button class="btn-icon" id="searchToggle" title="Cari Produk">
+        <i class="fas fa-search"></i>
+      </button>
+
+      <!-- Cart -->
+      <a href="/shop/cart" class="btn-icon cart-btn" title="Keranjang">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="badge" id="cartCount"><%= cart ? cart.reduce((s,i)=>s+i.qty,0) : 0 %></span>
+      </a>
+
+      <% if (user) { %>
+        <!-- Notifications -->
+        <button class="btn-icon notif-btn" id="notifBtn" title="Notifikasi">
+          <i class="fas fa-bell"></i>
+          <span class="badge notif-badge" id="notifBadge" style="display:none">0</span>
+        </button>
+
+        <!-- User Menu -->
+        <div class="user-dropdown">
+          <button class="user-btn">
+            <% if (user.avatar) { %><img src="/uploads/<%= user.avatar %>" alt="<%= user.name %>"><% } else { %><div class="user-avatar-default"><%= user.name.charAt(0).toUpperCase() %></div><% } %>
+            <span><%= user.name.split(' ')[0] %></span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-menu">
+            <div class="dropdown-header">
+              <strong><%= user.name %></strong>
+              <small><%= user.role === 'admin' ? 'Administrator' : 'Customer' %></small>
+            </div>
+            <% if (user.role === 'admin') { %><a href="/admin"><i class="fas fa-tachometer-alt"></i> Admin Panel</a><% } %>
+            <a href="/user/dashboard"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="/user/orders"><i class="fas fa-box"></i> Pesanan</a>
+            <a href="/user/points"><i class="fas fa-star"></i> Poin (<%= user.points || 0 %>)</a>
+            <a href="/user/profile"><i class="fas fa-user"></i> Profil</a>
+            <div class="dropdown-divider"></div>
+            <a href="/auth/logout" class="text-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
+        </div>
+      <% } else { %>
+        <a href="/auth/login" class="btn btn-outline btn-sm">Login</a>
+        <a href="/auth/register" class="btn btn-primary btn-sm">Daftar</a>
+      <% } %>
+
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-bar" id="searchBar">
+    <div class="search-inner">
+      <i class="fas fa-search"></i>
+      <input type="text" id="globalSearch" placeholder="Cari produk ramah lingkungan..." autocomplete="off">
+      <button class="search-close" id="searchClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</nav>
+
+<!-- Notification Dropdown -->
+<div class="notif-dropdown" id="notifDropdown">
+  <div class="notif-header"><strong>Notifikasi</strong><button id="markAllRead">Tandai dibaca</button></div>
+  <div class="notif-list" id="notifList"><p class="notif-empty">Tidak ada notifikasi</p></div>
+</div>
+
+<!-- Flash Messages -->
+<% if (success && success.length > 0) { %>
+<div class="alert alert-success" id="flashAlert"><i class="fas fa-check-circle"></i> <%= success[0] %><button onclick="this.parentElement.remove()">×</button></div>
+<% } %>
+<% if (error && error.length > 0) { %>
+<div class="alert alert-error" id="flashAlert"><i class="fas fa-exclamation-circle"></i> <%= error[0] %><button onclick="this.parentElement.remove()">×</button></div>
+<% } %>

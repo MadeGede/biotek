@@ -1,0 +1,36 @@
+<%- include('../partials/header') %>
+<div class="page-header"><h1>Hubungi Kami</h1><p>Kami siap membantu Anda 24/7</p><div class="breadcrumb"><a href="/">Home</a><span>›</span><span>Contact</span></div></div>
+<section class="section"><div class="container"><div class="contact-grid">
+<div class="contact-info-card">
+<h3>Informasi Kontak</h3>
+<div class="cinfo-item"><div class="cinfo-icon"><i class="fas fa-map-marker-alt"></i></div><div><h4>Alamat</h4><p>Jl. Teknologi Hijau No. 88<br>Jakarta Selatan 12740</p></div></div>
+<div class="cinfo-item"><div class="cinfo-icon"><i class="fas fa-phone"></i></div><div><h4>Telepon</h4><p>+62 21 7890 1234</p></div></div>
+<div class="cinfo-item"><div class="cinfo-icon"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p>info@bioteknasional.id</p></div></div>
+<div class="cinfo-item"><div class="cinfo-icon"><i class="fas fa-clock"></i></div><div><h4>Jam Operasional</h4><p>Senin – Jumat: 08.00 – 17.00 WIB</p></div></div>
+<div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.2)">
+<p style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:16px">Ikuti media sosial kami:</p>
+<div class="social-links"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-youtube"></i></a></div>
+</div></div>
+<div>
+<div class="card"><div class="card-body" style="padding:32px">
+<h3 style="margin-bottom:24px">Kirim Pesan</h3>
+<form action="/contact" method="POST">
+<div class="grid-2"><div class="form-group"><label class="form-label">Nama Lengkap *</label><input name="name" class="form-control" placeholder="Nama Anda" required></div><div class="form-group"><label class="form-label">Email *</label><input name="email" type="email" class="form-control" placeholder="email@contoh.com" required></div></div>
+<div class="form-group"><label class="form-label">Subjek *</label><input name="subject" class="form-control" placeholder="Perihal pesan Anda" required></div>
+<div class="form-group"><label class="form-label">Kategori</label><select name="category" class="form-control"><option>Pertanyaan Produk</option><option>Layanan Daur Ulang</option><option>Kerjasama Bisnis</option><option>Pengaduan</option><option>Lainnya</option></select></div>
+<div class="form-group"><label class="form-label">Pesan *</label><textarea name="message" class="form-control" rows="5" placeholder="Tulis pesan Anda di sini..." required></textarea></div>
+<button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fas fa-paper-plane"></i> Kirim Pesan</button>
+</form>
+</div></div>
+<div style="margin-top:24px;background:var(--c-bg2);border-radius:var(--r-lg);padding:20px">
+<h4 style="margin-bottom:16px"><i class="fas fa-question-circle" style="color:var(--c-primary-l)"></i> FAQ Cepat</h4>
+<% [['Bagaimana cara mendaftar?','Klik tombol Daftar di navbar, isi form pendaftaran dan verifikasi email Anda.'],['Bagaimana cara daur ulang?','Buka halaman Daur Ulang, isi form pengajuan, dan tim kami akan menjemput limbah Anda.'],['Metode pembayaran apa saja?','Kami menerima Transfer Bank (BRI, BCA, Mandiri) dan QRIS.']].forEach(([q,a])=>{ %>
+<details style="margin-bottom:12px;border-bottom:1px solid var(--c-border);padding-bottom:12px">
+<summary style="cursor:pointer;font-weight:600;font-size:14px"><%= q %></summary>
+<p style="font-size:13px;color:var(--c-text3);margin-top:8px"><%= a %></p>
+</details>
+<% }) %>
+</div>
+</div>
+</div></div></section>
+<%- include('../partials/footer') %>

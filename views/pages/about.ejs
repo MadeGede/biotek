@@ -1,0 +1,67 @@
+<%- include('../partials/header') %>
+<div class="page-header"><h1>Tentang Kami</h1><p>Mengenal lebih dekat PT BioTeknologi Nusantara</p><div class="breadcrumb"><a href="/">Home</a><span>›</span><span>About</span></div></div>
+<section class="section"><div class="container"><div class="about-split">
+<div>
+<span class="section-label">Profil Perusahaan</span>
+<h2 class="section-title">PT BioTeknologi Nusantara</h2>
+<p style="color:var(--c-text3);line-height:1.8;margin-bottom:20px">Didirikan pada tahun 2026 di Bima, PT BioTeknologi Nusantara hadir sebagai jawaban atas tantangan lingkungan yang semakin mendesak. Kami membangun ekosistem digital yang menghubungkan konsumen sadar lingkungan dengan produk-produk ramah lingkungan berkualitas tinggi.</p>
+<p style="color:var(--c-text3);line-height:1.8;margin-bottom:32px">Dengan teknologi mutakhir dan komitmen mendalam terhadap keberlanjutan, kami telah melayani lebih dari 50.000 pelanggan aktif dan berhasil memproses lebih dari 120 ton limbah menjadi produk bernilai guna.</p>
+<div class="grid-2" style="gap:16px">
+<div style="background:var(--c-bg2);border-radius:var(--r-lg);padding:20px;text-align:center"><strong style="font-family:var(--font-display);font-size:28px;color:var(--c-primary);display:block">2026</strong><span style="font-size:13px;color:var(--c-text3)">Tahun Berdiri</span></div>
+<div style="background:var(--c-bg2);border-radius:var(--r-lg);padding:20px;text-align:center"><strong style="font-family:var(--font-display);font-size:28px;color:var(--c-primary);display:block">150+</strong><span style="font-size:13px;color:var(--c-text3)">Karyawan</span></div>
+</div>
+</div>
+<div style="background:linear-gradient(135deg,var(--c-primary),#0a3520);border-radius:var(--r-xl);padding:48px;color:#fff;text-align:center">
+<div style="font-size:80px;margin-bottom:20px">🌱</div>
+<h3 style="color:var(--c-accent);font-size:24px;margin-bottom:16px">Komitmen Kami</h3>
+<p style="color:rgba(255,255,255,.75);line-height:1.8">Setiap produk yang kami jual, setiap limbah yang kami daur ulang adalah langkah nyata menuju Indonesia yang lebih hijau dan berkelanjutan.</p>
+<div style="margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+<div style="background:rgba(255,255,255,.1);border-radius:var(--r-lg);padding:16px"><span style="font-size:28px;display:block;color:var(--c-accent);font-family:var(--font-display);font-weight:800">50K+</span><span style="font-size:12px;color:rgba(255,255,255,.7)">Pengguna Aktif</span></div>
+<div style="background:rgba(255,255,255,.1);border-radius:var(--r-lg);padding:16px"><span style="font-size:28px;display:block;color:var(--c-accent);font-family:var(--font-display);font-weight:800">120T</span><span style="font-size:12px;color:rgba(255,255,255,.7)">Limbah Daur Ulang</span></div>
+</div>
+</div>
+</div></div></section>
+
+<section class="section" style="background:var(--c-bg2)"><div class="container">
+<div class="section-header text-center"><span class="section-label">Arah & Tujuan</span><h2 class="section-title">Visi & Misi Kami</h2></div>
+<div class="vision-mission">
+<div class="vm-card"><h3><i class="fas fa-eye"></i> Visi</h3><ul><li>Menjadi platform eco-commerce dan daur ulang terbesar di Asia Tenggara pada 2030</li><li>Mendorong gaya hidup berkelanjutan di setiap lapisan masyarakat Indonesia</li><li>Mengurangi 1 juta ton limbah dari TPA melalui sistem daur ulang digital</li></ul></div>
+<div class="vm-card"><h3><i class="fas fa-bullseye"></i> Misi</h3><ul><li>Menyediakan akses mudah ke produk ramah lingkungan berkualitas premium</li><li>Membangun infrastruktur daur ulang limbah berbasis teknologi dan AI</li><li>Mengedukasi masyarakat tentang pentingnya gaya hidup hijau dan berkelanjutan</li><li>Memberdayakan pengrajin lokal yang menggunakan bahan daur ulang</li></ul></div>
+</div>
+</div></section>
+
+<section class="section"><div class="container">
+<div class="section-header text-center"><span class="section-label">Tim Kami</span><h2 class="section-title">Pemimpin Visioner</h2></div>
+<div class="team-wrapper">
+<% [
+{
+  img:'aril.jpeg',
+  name:'Aril Ferdiansyah',
+  role:'CEO & Co-Founder',
+  bio:'Pemimpin visioner dengan fokus pada pengembangan bisnis berkelanjutan dan inovasi eco-tech.'
+},
+{
+  img:'made.jpeg',
+  name:'Made Gede',
+  role:'CTO & Co-Founder',
+  bio:'Mahasiswa S1 Teknik Informatika, Institut Teknologi PLN. Fokus pada pengembangan sistem dan teknologi platform.'
+}
+].forEach(t=>{ %>
+  
+<div class="team-card"><div class="team-avatar">
+    <img src="/images/team/<%= t.img %>" alt="<%= t.name %>">
+  </div>
+  <div class="team-name"><%= t.name %></div>
+  <div class="team-role"><%= t.role %></div>
+  <div class="team-bio"><%= t.bio %></div></div>
+<% }) %>
+</div></div></section>
+
+<section class="section" style="background:var(--c-bg2)"><div class="container">
+<div class="section-header text-center"><span class="section-label">Teknologi</span><h2 class="section-title">Inovasi yang Kami Gunakan</h2></div>
+<div class="grid-3">
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-robot"></i></div><h3>AI Waste Sorting</h3><p>Sistem kecerdasan buatan untuk mengidentifikasi dan mengklasifikasikan jenis limbah secara otomatis dan akurat.</p></div>
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-link"></i></div><h3>Blockchain Traceability</h3><p>Teknologi blockchain untuk melacak perjalanan produk dari sumber hingga ke tangan konsumen secara transparan.</p></div>
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-chart-line"></i></div><h3>Analytics Dashboard</h3><p>Platform analitik real-time untuk mengukur dampak lingkungan dari setiap transaksi dan aktivitas daur ulang.</p></div>
+</div></div></section>
+<%- include('../partials/footer') %>

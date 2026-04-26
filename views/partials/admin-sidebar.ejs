@@ -1,0 +1,17 @@
+<div class="sidebar">
+  <div class="sidebar-user">
+    <div class="sidebar-avatar" style="background:var(--c-amber);color:#fff"><i class="fas fa-user-shield"></i></div>
+    <strong><%= user.name %></strong>
+    <span style="color:var(--c-amber);font-size:12px;font-weight:600">Administrator</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="/admin" class="<%= title==='Admin Dashboard'?'active':'' %>"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="/admin/products" class="<%= title==='Kelola Produk'?'active':'' %>"><i class="fas fa-box-open"></i> Produk</a>
+    <a href="/admin/orders" class="<%= title==='Kelola Pesanan'?'active':'' %>"><i class="fas fa-shopping-cart"></i> Pesanan</a>
+    <a href="/admin/recycles" class="<%= title==='Kelola Daur Ulang'?'active':'' %>"><i class="fas fa-recycle"></i> Daur Ulang</a>
+    <a href="/admin/users" class="<%= title==='Kelola Pengguna'?'active':'' %>"><i class="fas fa-users"></i> Pengguna</a>
+    <div style="height:1px;background:var(--c-border);margin:8px 0"></div>
+    <a href="/" target="_blank"><i class="fas fa-external-link-alt"></i> Lihat Website</a>
+    <a href="/auth/logout" style="color:var(--c-red)"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </nav>
+</div>

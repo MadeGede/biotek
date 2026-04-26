@@ -1,0 +1,9 @@
+<%- include('../partials/header') %>
+<div style="min-height:70vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px">
+<div><div style="font-size:80px;margin-bottom:20px">⚠️</div>
+<h1 style="font-size:36px;margin-bottom:12px">Terjadi Kesalahan</h1>
+<p style="color:var(--c-text3);margin-bottom:32px">Mohon maaf, terjadi kesalahan pada server kami. Silakan coba lagi.</p>
+<% if (error && error.message) { %><div style="background:var(--c-bg2);border-radius:var(--r-md);padding:16px;margin-bottom:24px;text-align:left;font-family:monospace;font-size:13px;color:var(--c-red)"><%= error.message %></div><% } %>
+<a href="/" class="btn btn-primary btn-lg"><i class="fas fa-home"></i> Ke Beranda</a>
+</div></div>
+<%- include('../partials/footer') %>

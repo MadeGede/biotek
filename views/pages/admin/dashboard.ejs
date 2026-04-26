@@ -1,0 +1,63 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Admin Dashboard</h1><p>Selamat datang di panel administrasi PT BioTeknologi Nasional</p></div>
+<section class="section-sm"><div class="container"><div class="dashboard-layout">
+<%- include('../../partials/admin-sidebar') %>
+<div>
+<div class="stats-cards">
+<div class="stat-card green"><div class="stat-card-icon"><i class="fas fa-users"></i></div><div class="stat-card-value"><%= stats.total_users.toLocaleString('id-ID') %></div><div class="stat-card-label">Total Customer</div></div>
+<div class="stat-card amber"><div class="stat-card-icon"><i class="fas fa-shopping-cart"></i></div><div class="stat-card-value"><%= stats.total_orders %></div><div class="stat-card-label">Total Pesanan</div></div>
+<div class="stat-card blue"><div class="stat-card-icon"><i class="fas fa-rupiah-sign"></i></div><div class="stat-card-value" style="font-size:20px">Rp <%= Number(stats.total_revenue||0).toLocaleString('id-ID') %></div><div class="stat-card-label">Total Pendapatan</div></div>
+<div class="stat-card purple"><div class="stat-card-icon"><i class="fas fa-recycle"></i></div><div class="stat-card-value"><%= stats.total_recycles %></div><div class="stat-card-label">Total Daur Ulang</div></div>
+</div>
+
+<% if (stats.pending_orders > 0 || stats.pending_recycles > 0) { %>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+<% if (stats.pending_orders > 0) { %><div style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:var(--r-lg);padding:16px;display:flex;align-items:center;gap:12px"><i class="fas fa-exclamation-triangle" style="color:var(--c-amber);font-size:20px"></i><div><strong style="display:block"><%= stats.pending_orders %> Pesanan Pending</strong><a href="/admin/orders?status=pending" style="font-size:13px;color:var(--c-amber)">Lihat & Proses →</a></div></div><% } %>
+<% if (stats.pending_recycles > 0) { %><div style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);border-radius:var(--r-lg);padding:16px;display:flex;align-items:center;gap:12px"><i class="fas fa-clock" style="color:#3b82f6;font-size:20px"></i><div><strong style="display:block"><%= stats.pending_recycles %> Daur Ulang Pending</strong><a href="/admin/recycles" style="font-size:13px;color:#3b82f6">Lihat & Proses →</a></div></div><% } %>
+</div>
+<% } %>
+
+<div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:24px">
+<div class="card"><div class="card-body">
+<h4 style="margin-bottom:20px">Grafik Pendapatan 6 Bulan Terakhir</h4>
+<canvas id="revenueChart" height="200"
+  data-labels='<%= JSON.stringify(monthlyRevenue.map(r=>r.month)) %>'
+  data-values='<%= JSON.stringify(monthlyRevenue.map(r=>r.revenue)) %>'></canvas>
+</div></div>
+<div class="card"><div class="card-body">
+<h4 style="margin-bottom:16px">Produk Terlaris</h4>
+<% topProducts.forEach((p,i)=>{ %>
+<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--c-border);font-size:13px">
+<div><span style="color:var(--c-text3)">#<%= i+1 %></span> <%= p.name.substring(0,25)+'...' %></div>
+<strong><%= p.sold %> terjual</strong>
+</div>
+<% }) %>
+</div></div>
+</div>
+
+<div class="card"><div class="card-body">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+<h4>Pesanan Terbaru</h4>
+<a href="/admin/orders" style="font-size:13px;color:var(--c-primary-l)">Lihat Semua</a>
+</div>
+<div class="table-wrap"><table>
+<thead><tr><th>Kode</th><th>Customer</th><th>Total</th><th>Metode</th><th>Status Bayar</th><th>Status Pesanan</th><th>Tanggal</th></tr></thead>
+<tbody>
+<% recentOrders.forEach(o=>{ %>
+<tr>
+<td><strong style="color:var(--c-primary);font-size:13px"><%= o.order_code %></strong></td>
+<td style="font-size:13px"><%= o.user_name %></td>
+<td style="font-weight:600;white-space:nowrap">Rp <%= Number(o.grand_total).toLocaleString('id-ID') %></td>
+<td style="font-size:12px"><%= o.payment_method==='bank_transfer'?'Bank Transfer':'QRIS' %></td>
+<td><span class="status status-<%= o.payment_status %>"><%= {pending:'Pending',paid:'Lunas',failed:'Gagal'}[o.payment_status] %></span></td>
+<td><span class="status status-<%= o.order_status %>"><%= {pending:'Pending',processing:'Diproses',shipped:'Dikirim',completed:'Selesai',cancelled:'Dibatalkan'}[o.order_status] %></span></td>
+<td style="font-size:12px;color:var(--c-text3)"><%= new Date(o.created_at).toLocaleDateString('id-ID') %></td>
+</tr>
+<% }) %>
+</tbody>
+</table></div>
+</div></div>
+</div>
+</div></div></section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<%- include('../../partials/footer') %>

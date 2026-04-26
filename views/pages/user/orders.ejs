@@ -1,0 +1,32 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Riwayat Pesanan</h1><div class="breadcrumb"><a href="/">Home</a><span>›</span><a href="/user/dashboard">Dashboard</a><span>›</span><span>Pesanan</span></div></div>
+<section class="section-sm"><div class="container"><div class="dashboard-layout">
+<%- include('../../partials/sidebar') %>
+<div>
+<% if (!orders.length) { %>
+<div class="empty-state"><div class="empty-icon">📦</div><h3>Belum Ada Pesanan</h3><p>Yuk mulai belanja produk ramah lingkungan pilihan kami!</p><a href="/shop" class="btn btn-primary">Mulai Belanja</a></div>
+<% } else { %>
+<div class="card"><div class="table-wrap">
+<table>
+<thead><tr><th>Kode Pesanan</th><th>Produk</th><th>Total</th><th>Pembayaran</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+<tbody>
+<% orders.forEach(o=>{ %>
+<tr>
+<td><strong style="color:var(--c-primary);font-size:13px"><%= o.order_code %></strong></td>
+<td style="max-width:180px;font-size:13px"><%= o.product_names ? o.product_names.substring(0,50)+'...' : '-' %></td>
+<td style="font-weight:600;white-space:nowrap">Rp <%= Number(o.grand_total).toLocaleString('id-ID') %></td>
+<td><span class="status status-<%= o.payment_status %>"><%= {pending:'Belum Bayar',paid:'Lunas',failed:'Gagal'}[o.payment_status]||o.payment_status %></span></td>
+<td><span class="status status-<%= o.order_status %>"><%= {pending:'Pending',processing:'Diproses',shipped:'Dikirim',completed:'Selesai',cancelled:'Dibatalkan'}[o.order_status]||o.order_status %></span></td>
+<td style="font-size:12px;color:var(--c-text3);white-space:nowrap"><%= new Date(o.created_at).toLocaleDateString('id-ID') %></td>
+<td>
+  <a href="/user/orders/<%= o.id %>" class="btn btn-outline btn-sm">Detail</a>
+  <% if (o.payment_status === 'pending') { %><a href="/shop/payment/<%= o.id %>" class="btn btn-primary btn-sm" style="margin-left:4px">Bayar</a><% } %>
+</td>
+</tr>
+<% }) %>
+</tbody>
+</table>
+</div></div>
+<% } %>
+</div></div></div></section>
+<%- include('../../partials/footer') %>

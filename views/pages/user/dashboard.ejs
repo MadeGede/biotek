@@ -1,0 +1,48 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Dashboard Saya</h1><div class="breadcrumb"><a href="/">Home</a><span>›</span><span>Dashboard</span></div></div>
+<section class="section-sm"><div class="container"><div class="dashboard-layout">
+<%- include('../../partials/sidebar') %>
+<div>
+<div class="stats-cards" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px">
+<div class="stat-card green"><div class="stat-card-icon"><i class="fas fa-box"></i></div><div class="stat-card-value"><%= userStats.total_orders %></div><div class="stat-card-label">Total Pesanan</div></div>
+<div class="stat-card amber"><div class="stat-card-icon"><i class="fas fa-recycle"></i></div><div class="stat-card-value"><%= userStats.total_recycles %></div><div class="stat-card-label">Daur Ulang</div></div>
+<div class="stat-card purple"><div class="stat-card-icon"><i class="fas fa-star"></i></div><div class="stat-card-value"><%= userStats.points %></div><div class="stat-card-label">Poin Reward</div></div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+<div class="card"><div class="card-body">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h4>Pesanan Terbaru</h4><a href="/user/orders" style="font-size:13px;color:var(--c-primary-l)">Lihat Semua</a></div>
+<% if (!orders.length) { %><p style="color:var(--c-text3);font-size:14px;text-align:center;padding:20px 0">Belum ada pesanan</p>
+<% } else { orders.forEach(o=>{ %>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--c-border)">
+<div><a href="/user/orders/<%= o.id %>" style="font-size:13px;font-weight:600;color:var(--c-primary)"><%= o.order_code %></a><div style="font-size:12px;color:var(--c-text3)"><%= new Date(o.created_at).toLocaleDateString('id-ID') %></div></div>
+<div style="text-align:right"><div style="font-size:13px;font-weight:600">Rp <%= Number(o.grand_total).toLocaleString('id-ID') %></div><span class="status status-<%= o.order_status %>" style="font-size:10px"><%= o.order_status %></span></div>
+</div>
+<% }) } %>
+</div></div>
+
+<div class="card"><div class="card-body">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h4>Daur Ulang Terbaru</h4><a href="/user/recycles" style="font-size:13px;color:var(--c-primary-l)">Lihat Semua</a></div>
+<% if (!recycles.length) { %><p style="color:var(--c-text3);font-size:14px;text-align:center;padding:20px 0">Belum ada pengajuan</p>
+<% } else { recycles.forEach(r=>{ %>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--c-border)">
+<div><div style="font-size:13px;font-weight:600;color:var(--c-primary)"><%= r.submission_code %></div><div style="font-size:12px;color:var(--c-text3)"><%= r.waste_type %> — <%= new Date(r.created_at).toLocaleDateString('id-ID') %></div></div>
+<span class="status status-<%= r.status %>" style="font-size:10px"><%= r.status %></span>
+</div>
+<% }) } %>
+</div></div>
+</div>
+
+<div class="card"><div class="card-body">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h4>Notifikasi</h4><button onclick="markRead()" style="font-size:12px;color:var(--c-primary-l);background:none;border:none;cursor:pointer">Tandai Dibaca</button></div>
+<% if (!notifications.length) { %><p style="color:var(--c-text3);font-size:14px;text-align:center;padding:20px 0">Tidak ada notifikasi</p>
+<% } else { notifications.slice(0,5).forEach(n=>{ %>
+<div class="notif-item <%= !n.is_read?'unread':'' %>" style="border-radius:var(--r-md)">
+<div class="notif-icon"><i class="fas fa-bell"></i></div>
+<div class="notif-content"><strong><%= n.title %></strong><p><%= n.message %></p><p style="font-size:11px;margin-top:4px"><%= new Date(n.created_at).toLocaleDateString('id-ID') %></p></div>
+</div>
+<% }) } %>
+</div></div>
+</div>
+</div></div></section>
+<%- include('../../partials/footer') %>

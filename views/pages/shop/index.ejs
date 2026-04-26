@@ -1,0 +1,60 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Marketplace Eco</h1><p>Temukan produk ramah lingkungan pilihan terbaik</p><div class="breadcrumb"><a href="/">Home</a><span>›</span><span>Shopping</span></div></div>
+<section class="section-sm"><div class="container">
+<div class="shop-layout">
+<aside class="filter-sidebar">
+<div class="filter-card">
+<h4><i class="fas fa-search" style="color:var(--c-primary-l)"></i> Cari Produk</h4>
+<form method="GET" action="/shop"><input name="q" class="form-control" placeholder="Nama produk..." value="<%= query.q||'' %>"><br>
+<h4>Kategori</h4>
+<% categories.forEach(c=>{ %><div class="filter-option"><input type="radio" name="category" id="cat_<%= c.id %>" value="<%= c.slug %>" <%= query.category===c.slug?'checked':'' %>><label for="cat_<%= c.id %>"><i class="fas <%= c.icon||'fa-tag' %>" style="color:var(--c-primary-l);width:16px"></i> <%= c.name %></label></div><% }) %>
+<div class="filter-option"><input type="radio" name="category" id="cat_all" value="" <%= !query.category?'checked':'' %>><label for="cat_all">Semua Kategori</label></div>
+<br><h4>Harga</h4>
+<div class="price-inputs"><input name="min_price" class="form-control" placeholder="Min" value="<%= query.min_price||'' %>"><input name="max_price" class="form-control" placeholder="Max" value="<%= query.max_price||'' %>"></div>
+<br><button type="submit" class="btn btn-primary btn-block">Terapkan Filter</button>
+<a href="/shop" class="btn btn-ghost btn-block" style="margin-top:8px">Reset</a>
+</form></div></aside>
+<div>
+<div class="products-header">
+<span class="products-count">Menampilkan <%= products.length %> dari <%= total %> produk</span>
+<select class="sort-select" onchange="location.href='/shop?sort='+this.value+'&q=<%= query.q||'' %>&category=<%= query.category||'' %>'">
+<option value="">Terbaru</option>
+<option value="popular" <%= query.sort==='popular'?'selected':'' %>>Terlaris</option>
+<option value="price_asc" <%= query.sort==='price_asc'?'selected':'' %>>Harga: Rendah ke Tinggi</option>
+<option value="price_desc" <%= query.sort==='price_desc'?'selected':'' %>>Harga: Tinggi ke Rendah</option>
+<option value="rating" <%= query.sort==='rating'?'selected':'' %>>Rating Tertinggi</option>
+</select></div>
+<% if (!products.length) { %><div class="empty-state"><div class="empty-icon">🔍</div><h3>Produk Tidak Ditemukan</h3><p>Coba ubah kata kunci atau filter pencarian Anda</p><a href="/shop" class="btn btn-primary">Reset Pencarian</a></div>
+<% } else { %>
+<div class="product-grid">
+<% products.forEach(p=>{ %>
+<div class="product-card">
+  <a href="/shop/<%= p.slug %>">
+    <div class="product-img-wrap">
+      <% if (p.image) { %><img src="/images/products/<%= p.image %>" alt="<%= p.name %>" loading="lazy"><% } else { %><div class="product-img-placeholder"><i class="fas fa-leaf"></i></div><% } %>
+      <div class="product-badges"><% if (p.eco_label) { %><span class="badge-eco"><i class="fas fa-leaf"></i> <%= p.eco_label %></span><% } %></div>
+      <button class="product-wishlist-btn <%= wishlistIds.includes(p.id)?'active':'' %>" onclick="event.preventDefault();toggleWishlist(<%= p.id %>,this)"><i class="fas fa-heart"></i></button>
+    </div>
+  </a>
+  <div class="product-info">
+    <div class="product-category"><%= p.category_name||'Eco Product' %></div>
+    <a href="/shop/<%= p.slug %>"><div class="product-name"><%= p.name %></div></a>
+    <div class="product-stars"><span class="stars"><%= '★'.repeat(Math.round(p.avg_rating||0)) %><%= '☆'.repeat(5-Math.round(p.avg_rating||0)) %></span><span class="review-count">(<%= p.review_count||0 %>)</span></div>
+    <div class="product-price">Rp <%= Number(p.price).toLocaleString('id-ID') %></div>
+    <% if (p.stock > 0) { %>
+    <div class="product-footer">
+      <button class="btn btn-primary btn-sm" style="flex:1" onclick="addToCart(<%= p.id %>,this)"><i class="fas fa-cart-plus"></i> Keranjang</button>
+      <a href="/shop/<%= p.slug %>" class="btn btn-outline btn-sm">Detail</a>
+    </div>
+    <% } else { %><div style="font-size:12px;color:var(--c-red);font-weight:600;margin-top:8px"><i class="fas fa-times-circle"></i> Stok Habis</div><% } %>
+  </div>
+</div>
+<% }) %>
+</div>
+<% if (totalPages > 1) { %>
+<div class="pagination">
+<% for(let i=1;i<=totalPages;i++){ %><a href="/shop?page=<%= i %>&q=<%= query.q||'' %>&category=<%= query.category||'' %>&sort=<%= query.sort||'' %>" class="page-btn <%= page===i?'active':'' %>"><%= i %></a><% } %>
+</div><% } %>
+<% } %>
+</div></div></div></section>
+<%- include('../../partials/footer') %>

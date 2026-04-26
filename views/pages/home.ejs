@@ -1,0 +1,102 @@
+<%- include('../partials/header') %>
+<section class="hero">
+<div class="hero-bg"></div>
+<div id="particles-container" style="position:absolute;inset:0;overflow:hidden;pointer-events:none"></div>
+<div class="hero-content">
+  <div>
+    <span class="hero-badge"><i class="fas fa-leaf"></i> Platform Eco #1 Indonesia</span>
+    <h1 class="hero-title">Belanja Hijau,<br><span class="highlight">Bumi Lestari</span></h1>
+    <p class="hero-desc">Marketplace produk ramah lingkungan terlengkap dan platform daur ulang limbah terpercaya di Indonesia.</p>
+    <div class="hero-cta">
+      <a href="/shop" class="btn btn-accent btn-lg"><i class="fas fa-shopping-bag"></i> Mulai Belanja</a>
+      <a href="/daur-ulang" class="btn btn-lg" style="color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:var(--r-full)"><i class="fas fa-recycle"></i> Daur Ulang</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat-item"><strong><%= Number(stats.users||0).toLocaleString('id-ID') %>+</strong><span>Pengguna Aktif</span></div>
+      <div class="hero-stat-item"><strong><%= Number(stats.products||0).toLocaleString('id-ID') %>+</strong><span>Produk Eco</span></div>
+      <div class="hero-stat-item"><strong><%= Number(stats.recycled||0).toLocaleString('id-ID') %>+</strong><span>Daur Ulang Selesai</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card-float"><div class="hero-icon-big">🌿</div><h3>Teknologi Hijau</h3><p>untuk Indonesia Berkelanjutan</p></div>
+    <div class="hero-floating-badge badge-1"><i class="fas fa-check-circle"></i> 100% Eco Certified</div>
+    <div class="hero-floating-badge badge-2"><i class="fas fa-star" style="color:var(--c-amber)"></i> Rating 4.9/5</div>
+  </div>
+</div></section>
+
+<section class="section"><div class="container">
+<div class="section-header text-center"><span class="section-label">Mengapa Kami?</span><h2 class="section-title">Platform Lengkap untuk Gaya Hidup Hijau</h2></div>
+<div class="grid-4">
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-leaf"></i></div><h3>100% Eco Certified</h3><p>Semua produk tersertifikasi ramah lingkungan melalui seleksi ketat tim ahli kami.</p></div>
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-recycle"></i></div><h3>Daur Ulang Mudah</h3><p>Ajukan pickup limbah dari rumah. Tim kami siap menjemput dan memproses dengan tepat.</p></div>
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-star"></i></div><h3>Reward Points</h3><p>Kumpulkan poin dari daur ulang dan tukarkan dengan diskon menarik di marketplace.</p></div>
+<div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>Transaksi Aman</h3><p>Pembayaran terenkripsi, data terlindungi, dan garansi produk asli.</p></div>
+</div></div></section>
+
+<div class="stats-strip"><div class="container"><div class="stats-grid">
+<div class="stat-item"><strong>50K+</strong><span>Produk Eco Tersedia</span></div>
+<div class="stat-item"><strong>120T</strong><span>Limbah Terdaur Ulang</span></div>
+<div class="stat-item"><strong>98%</strong><span>Kepuasan Pelanggan</span></div>
+<div class="stat-item"><strong>30+</strong><span>Kota Terjangkau</span></div>
+</div></div></div>
+
+<section class="section"><div class="container">
+<div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px">
+<div><span class="section-label">Produk Pilihan</span><h2 class="section-title">Produk Unggulan Eco</h2></div>
+<a href="/shop" class="btn btn-outline">Lihat Semua <i class="fas fa-arrow-right"></i></a></div>
+<div class="grid-3">
+<% featured.forEach(p => { %>
+<div class="product-card">
+  <a href="/shop/<%= p.slug %>">
+    <div class="product-img-wrap">
+      <% if (p.image) { %><img src="/images/products/<%= p.image %>" alt="<%= p.name %>"><% } else { %><div class="product-img-placeholder"><i class="fas fa-leaf"></i></div><% } %>
+      <div class="product-badges"><% if (p.eco_label) { %><span class="badge-eco"><i class="fas fa-leaf"></i> <%= p.eco_label %></span><% } %></div>
+    </div>
+  </a>
+  <div class="product-info">
+    <div class="product-stars"><span class="stars"><%= '★'.repeat(Math.round(p.avg_rating||0)) %><%= '☆'.repeat(5-Math.round(p.avg_rating||0)) %></span><span class="review-count">(<%= p.review_count||0 %>)</span></div>
+    <a href="/shop/<%= p.slug %>"><div class="product-name"><%= p.name %></div></a>
+    <div class="product-price">Rp <%= Number(p.price).toLocaleString('id-ID') %></div>
+    <div class="product-footer">
+      <button class="btn btn-primary btn-sm" onclick="addToCart(<%= p.id %>, this)"><i class="fas fa-cart-plus"></i> Keranjang</button>
+      <button class="btn btn-ghost btn-sm wishlist-toggle" data-id="<%= p.id %>"><i class="fas fa-heart"></i></button>
+    </div>
+  </div>
+</div>
+<% }) %>
+</div></div></section>
+
+<section class="section" style="background:var(--c-bg2)"><div class="container">
+<div class="section-header text-center"><span class="section-label">Edukasi</span><h2 class="section-title">Mengapa Daur Ulang Itu Penting?</h2></div>
+<div class="grid-3" style="margin-top:40px">
+<div class="edu-card"><div class="edu-icon-wrap">🌍</div><div class="edu-content"><h4>Kurangi Emisi Karbon</h4><p>Daur ulang 1 ton kertas setara menyelamatkan 17 pohon dan mengurangi 2.5 ton emisi CO₂ dari atmosfer.</p></div></div>
+<div class="edu-card"><div class="edu-icon-wrap">💧</div><div class="edu-content"><h4>Hemat Sumber Daya</h4><p>Proses daur ulang aluminium menghemat 95% energi dan air dibandingkan produksi dari bahan baru.</p></div></div>
+<div class="edu-card"><div class="edu-icon-wrap">🐠</div><div class="edu-content"><h4>Lindungi Ekosistem Laut</h4><p>8 juta ton plastik masuk ke laut setiap tahun. Daur ulang adalah solusi nyata dari rumah Anda.</p></div></div>
+</div>
+<div class="text-center" style="margin-top:40px"><a href="/daur-ulang" class="btn btn-primary btn-lg"><i class="fas fa-recycle"></i> Mulai Daur Ulang</a></div>
+</div></section>
+
+<section class="section"><div class="container"><div class="cta-section">
+<h2>Bergabunglah dengan 50.000+ Pengguna Aktif</h2>
+<p>Mulai perjalanan hijau Anda hari ini. Belanja produk eco-friendly dan daur ulang limbah.</p>
+<div class="cta-buttons">
+<a href="/auth/register" class="btn btn-accent btn-lg"><i class="fas fa-user-plus"></i> Daftar Gratis</a>
+<a href="/shop" class="btn btn-lg" style="color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:var(--r-full)"><i class="fas fa-shopping-bag"></i> Lihat Marketplace</a>
+</div></div></div></section>
+
+<section class="section"><div class="container">
+<div class="section-header text-center"><span class="section-label">Testimoni</span><h2 class="section-title">Kata Pelanggan Kami</h2></div>
+<div class="grid-3">
+<% const defaultTestis=[{name:'Sari Dewi',text:'Produk-produknya berkualitas tinggi dan benar-benar ramah lingkungan!'},{name:'Budi Santoso',text:'Layanan daur ulang sangat memudahkan. Saya dapat poin dan lingkungan terjaga!'},{name:'Rina Utami',text:'Senang belanja di sini. Sabun organiknya luar biasa untuk keluarga kami.'}]; %>
+<% (testimonials.length?testimonials:defaultTestis).forEach(t => { %>
+<div class="testimonial-card">
+  <div class="testi-stars">★★★★★</div>
+  <p class="testi-text">"<%= t.comment||t.text %>"</p>
+  <div class="testi-author">
+    <div class="testi-avatar"><% if (t.avatar) { %><img src="/uploads/<%= t.avatar %>" alt=""><% } else { %><%= (t.user_name||t.name).charAt(0) %><% } %></div>
+    <div><div class="testi-name"><%= t.user_name||t.name %></div><div class="testi-product"><%= t.product_name||'Pelanggan Setia' %></div></div>
+  </div>
+</div>
+<% }) %>
+</div></div></section>
+<%- include('../partials/footer') %>

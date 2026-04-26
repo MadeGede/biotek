@@ -1,0 +1,52 @@
+<%- include('../../partials/header') %>
+<div class="page-header"><h1>Keranjang Belanja</h1><div class="breadcrumb"><a href="/">Home</a><span>›</span><a href="/shop">Shopping</a><span>›</span><span>Keranjang</span></div></div>
+<section class="section-sm"><div class="container">
+<% if (!cart || !cart.length) { %>
+<div class="empty-state"><div class="empty-icon">🛒</div><h3>Keranjang Masih Kosong</h3><p>Yuk mulai belanja produk ramah lingkungan pilihan kami!</p><a href="/shop" class="btn btn-primary btn-lg"><i class="fas fa-shopping-bag"></i> Mulai Belanja</a></div>
+<% } else { %>
+<div class="cart-layout">
+<div>
+<div class="card">
+<div style="padding:20px;border-bottom:1px solid var(--c-border);display:flex;justify-content:space-between;align-items:center"><h3>Produk (<%= cart.length %> item)</h3><button onclick="clearCart()" class="btn btn-ghost btn-sm" style="color:var(--c-red)"><i class="fas fa-trash"></i> Kosongkan</button></div>
+<% cart.forEach(item=>{ %>
+<div class="cart-item" id="cart-item-<%= item.id %>">
+<% if (item.image) { %><img src="/images/products/<%= item.image %>" class="cart-img" alt="<%= item.name %>"><% } else { %><div class="cart-img-placeholder"><i class="fas fa-leaf"></i></div><% } %>
+<div>
+<a href="/shop/<%= item.slug %>"><div class="cart-name"><%= item.name %></div></a>
+<div class="cart-price">Rp <%= Number(item.price).toLocaleString('id-ID') %> / item</div>
+<div class="qty-control">
+<button class="qty-btn" onclick="updateQty(<%= item.id %>,-1,<%= item.stock %>)">−</button>
+<input class="qty-input" id="qty_<%= item.id %>" type="number" value="<%= item.qty %>" min="1" max="<%= item.stock %>" onchange="setQty(<%= item.id %>,this.value,<%= item.stock %>)">
+<button class="qty-btn" onclick="updateQty(<%= item.id %>,1,<%= item.stock %>)">+</button>
+</div>
+</div>
+<div style="text-align:right">
+<div class="cart-subtotal" id="sub_<%= item.id %>">Rp <%= Number(item.price*item.qty).toLocaleString('id-ID') %></div>
+<button class="cart-remove" onclick="removeItem(<%= item.id %>)"><i class="fas fa-times"></i> Hapus</button>
+</div>
+</div>
+<% }) %>
+</div></div>
+<div class="order-summary">
+<h3 style="margin-bottom:20px">Ringkasan Pesanan</h3>
+<div class="summary-row"><span>Subtotal</span><span id="summaryTotal">Rp <%= Number(total).toLocaleString('id-ID') %></span></div>
+<div class="summary-row"><span>Ongkos Kirim</span><span id="summaryShipping"><%= total >= 200000 ? 'GRATIS' : 'Rp 15.000' %></span></div>
+<% if (total < 200000) { %><div style="font-size:12px;color:var(--c-primary-l);margin:8px 0"><i class="fas fa-info-circle"></i> Tambah Rp <%= Number(200000-total).toLocaleString('id-ID') %> lagi untuk gratis ongkir!</div><% } %>
+<div class="summary-total"><span>Total</span><span class="price" id="summaryGrand">Rp <%= Number(total+(total>=200000?0:15000)).toLocaleString('id-ID') %></span></div>
+<a href="/shop/checkout" class="btn btn-primary btn-block btn-lg" style="margin-top:16px"><i class="fas fa-lock"></i> Checkout Sekarang</a>
+<a href="/shop" class="btn btn-ghost btn-block" style="margin-top:8px"><i class="fas fa-arrow-left"></i> Lanjut Belanja</a>
+<div style="margin-top:20px;font-size:12px;color:var(--c-text3);text-align:center;display:flex;justify-content:center;gap:16px">
+<span><i class="fas fa-shield-alt" style="color:var(--c-primary-l)"></i> Transaksi Aman</span>
+<span><i class="fas fa-lock" style="color:var(--c-primary-l)"></i> SSL Terenkripsi</span>
+</div>
+</div>
+</div>
+<% } %>
+</div></section>
+<script>
+async function updateQty(id,delta,max){const el=document.getElementById('qty_'+id);const newQty=Math.max(1,Math.min(max,(parseInt(el.value)||1)+delta));el.value=newQty;await setQty(id,newQty,max);}
+async function setQty(id,qty,max){qty=Math.max(1,Math.min(max,parseInt(qty)||1));document.getElementById('qty_'+id).value=qty;const r=await fetch('/shop/cart/update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:id,qty})});const d=await r.json();if(d.success){document.getElementById('cartCount').textContent=d.cartCount;location.reload();}}
+async function removeItem(id){if(!confirm('Hapus produk ini dari keranjang?'))return;const r=await fetch('/shop/cart/remove',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:id})});const d=await r.json();if(d.success){document.getElementById('cart-item-'+id).remove();document.getElementById('cartCount').textContent=d.cartCount;location.reload();}}
+async function clearCart(){if(!confirm('Kosongkan semua keranjang?'))return;const items=document.querySelectorAll('[id^="cart-item-"]');for(const el of items){const id=el.id.replace('cart-item-','');await fetch('/shop/cart/remove',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:id})});}location.reload();}
+</script>
+<%- include('../../partials/footer') %>

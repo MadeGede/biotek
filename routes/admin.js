@@ -1,0 +1,16 @@
+const express = require('express');
+const router = express.Router();
+const AdminController = require('../controllers/AdminController');
+const { isAuthenticated, isAdmin } = require('../middleware/auth');
+router.use(isAuthenticated, isAdmin);
+router.get('/', AdminController.dashboard);
+router.get('/products', AdminController.products);
+router.post('/products', AdminController.storeProduct);
+router.post('/products/:id', AdminController.updateProduct);
+router.delete('/products/:id', AdminController.deleteProduct);
+router.get('/orders', AdminController.orders);
+router.post('/orders/:id/status', AdminController.updateOrderStatus);
+router.get('/recycles', AdminController.recycles);
+router.post('/recycles/:id/status', AdminController.updateRecycleStatus);
+router.get('/users', AdminController.users);
+module.exports = router;

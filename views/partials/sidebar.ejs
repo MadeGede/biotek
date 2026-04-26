@@ -1,0 +1,21 @@
+<div class="sidebar">
+  <div class="sidebar-user">
+    <div class="sidebar-avatar"><%= user.name.charAt(0).toUpperCase() %></div>
+    <strong><%= user.name %></strong>
+    <span><%= user.role === 'admin' ? 'Administrator' : 'Customer' %></span>
+    <div class="points-badge-sidebar"><i class="fas fa-star"></i> <%= user.points || 0 %> Poin</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="/user/dashboard" class="<%= title==='Dashboard Saya'?'active':'' %>"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="/user/orders" class="<%= title==='Riwayat Pesanan'?'active':'' %>"><i class="fas fa-box"></i> Pesanan Saya</a>
+    <a href="/user/recycles" class="<%= title==='Riwayat Daur Ulang'?'active':'' %>"><i class="fas fa-recycle"></i> Daur Ulang</a>
+    <a href="/user/wishlist" class="<%= title==='Wishlist Saya'?'active':'' %>"><i class="fas fa-heart"></i> Wishlist</a>
+    <a href="/user/points" class="<%= title==='Poin & Reward'?'active':'' %>"><i class="fas fa-star"></i> Poin & Reward</a>
+    <a href="/user/profile" class="<%= title==='Profil Saya'?'active':'' %>"><i class="fas fa-user"></i> Profil</a>
+    <div style="height:1px;background:var(--c-border);margin:8px 0"></div>
+    <a href="/shop"><i class="fas fa-shopping-bag"></i> Belanja</a>
+    <a href="/daur-ulang/form"><i class="fas fa-plus"></i> Ajukan Daur Ulang</a>
+    <div style="height:1px;background:var(--c-border);margin:8px 0"></div>
+    <a href="/auth/logout" style="color:var(--c-red)"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </nav>
+</div>
